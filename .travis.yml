@@ -1,15 +1,19 @@
 language: c++
 script:
-  - echo TESTING
+  - echo TESTING > output.txt
 
 matrix:
   include:
     - os: linux
       sudo: required
       dist: trusty
-      before_install:
-        - sudo dpkg --add-architecture i386
-        - sudo apt-get update -qq
-      install:
-        - sudo apt-get install -y zlib1g:i386
-        - sudo apt-get install -y gcc-multilib zlib1g-dev:i386
+      before_deploy:
+        - tar -czf Testing-File.tar.gz output.txt
+      deploy:
+        provider: releases
+        api_key:
+          secure: AIZJ5EnRz/Wh8Q7PDGz7PRE1y5NUmiZdknHgBvSlwfBIsVfQqrgIWH5mBnfWhLT2J/n8RV4GgJM0tqytsHdDzlAemf+OpIBQWE5xZUn5Ns6R3hFp3kRtf0j/Hwb5KI+SWpFpXwnGkFtRQw7ey57XUSiPPvvL/F0EEeCaXMxLA30Lhn6LvQmgZ+bNM3/qL8lteH3+Xw5oa4ZVPR9N0vF1IMEgc2DhhGeJvbh6NZ8DQnvogTXafYUVIml79YnefOzklyjurzSGHKHjTsGNQNR839jFhPR0xMLM3ANN4iTOuN0AJz60OtEJt91L87V6IedlhhVi1UAWXtzz974xtj+X1zYkZW4u4xCtkL52QXS40Nfl0Md8UicVgU8FDhnKdDLFkmkhPv/GkOtXd/+ABZjZr5q6taCRTjvj96LgqHvjQ81kdo8sNBsPJpr/iCl2u2/WePgJxJU3VYpXcUZ4de4XLjaNcfEmfh6lq7TqrhvXh2iRHKf0CweuCzwwMWIb0x5h39d5nZpcs/+F958fKvnNvf/IbOgM7HLsScwjXuRMDW+vUiNgveTU0Ci3/Qg+aIoVOG0CJqHQbLrGQ/5x6UaoQPfWHFAOkfLPFhwGyov+iPoePuILb8lzYs9W0HHjm4pBx1yokwFFZx66JCe7La0s1m/LJtL0xRq6Kj0v7u+uEmU=
+        file: Testing-File.tar.gz
+        skip_cleanup: true
+        on:
+          tags: true
