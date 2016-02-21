@@ -1,0 +1,15 @@
+language: c++
+script:
+  - echo TESTING
+
+matrix:
+  include:
+    - os: linux
+      sudo: required
+      dist: trusty
+      before_install:
+        - sudo dpkg --add-architecture i386
+        - sudo apt-get update -qq
+      install:
+        - sudo apt-get install -y g++-multilib
+        - sudo apt-get install -y zlib1g-dev:i386
