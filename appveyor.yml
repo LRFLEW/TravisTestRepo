@@ -29,4 +29,6 @@ deploy:
 - provider: GitHub
   auth_token:
     secure: miPrvp4kj2bjSwLYaxsKk3X48RwA+dCdTXYd6MfZ2E5xvBhq/3EzsrUhIbAE1cS+
-  artifact: OpenRCT2Launcher-win.zip, OpenRCT2Launcher-win.exe
+  artifact: OpenRCT2Launcher-win.zip,OpenRCT2Launcher-win.exe
+  on:
+    appveyor_repo_tag: true
