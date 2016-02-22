@@ -12,8 +12,6 @@ build_script:
     nmake
 before_deploy:
 - cmd: >-
-    set PATH="C:\Program Files\7-Zip";"C:\Program Files (x86)\Inno Setup 5";%PATH%
-
     mkdir build-Windows
 
     copy release\OpenRCT2.exe build-Windows\OpenRCT2.exe
@@ -24,7 +22,11 @@ before_deploy:
 
     choco install innosetup
 
+    set PATH="C:\Program Files (x86)\Inno Setup 5";%PATH%
+
     iscc installer.iss
+
+    dir
 deploy:
 - provider: GitHub
   auth_token:
