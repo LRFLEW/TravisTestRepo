@@ -1,10 +1,11 @@
 language: c++
 script:
-  - qmake $QMAKE_ARGS; make
+  - qmake $QMAKE_ARGS && make
 deploy:
   provider: releases
   api_key:
     secure: AIZJ5EnRz/Wh8Q7PDGz7PRE1y5NUmiZdknHgBvSlwfBIsVfQqrgIWH5mBnfWhLT2J/n8RV4GgJM0tqytsHdDzlAemf+OpIBQWE5xZUn5Ns6R3hFp3kRtf0j/Hwb5KI+SWpFpXwnGkFtRQw7ey57XUSiPPvvL/F0EEeCaXMxLA30Lhn6LvQmgZ+bNM3/qL8lteH3+Xw5oa4ZVPR9N0vF1IMEgc2DhhGeJvbh6NZ8DQnvogTXafYUVIml79YnefOzklyjurzSGHKHjTsGNQNR839jFhPR0xMLM3ANN4iTOuN0AJz60OtEJt91L87V6IedlhhVi1UAWXtzz974xtj+X1zYkZW4u4xCtkL52QXS40Nfl0Md8UicVgU8FDhnKdDLFkmkhPv/GkOtXd/+ABZjZr5q6taCRTjvj96LgqHvjQ81kdo8sNBsPJpr/iCl2u2/WePgJxJU3VYpXcUZ4de4XLjaNcfEmfh6lq7TqrhvXh2iRHKf0CweuCzwwMWIb0x5h39d5nZpcs/+F958fKvnNvf/IbOgM7HLsScwjXuRMDW+vUiNgveTU0Ci3/Qg+aIoVOG0CJqHQbLrGQ/5x6UaoQPfWHFAOkfLPFhwGyov+iPoePuILb8lzYs9W0HHjm4pBx1yokwFFZx66JCe7La0s1m/LJtL0xRq6Kj0v7u+uEmU=
+  file: $DEPLOY_FILE
   skip_cleanup: true
   on:
     tags: true
@@ -16,12 +17,12 @@ matrix:
       before_install:
         - brew update
       install:
-        - brew install qt5; brew link --force qt5
+        - brew install qt5 && brew link --force qt5
       before_deploy:
         - macdeployqt OpenRCT2.app
         - zip -r OpenRCT2Launcher-osx.zip OpenRCT2.app
-      deploy:
-        file: OpenRCT2Launcher-osx.zip
+      env:
+        - DEPLOY_FILE=OpenRCT2Launcher-osx.zip
     - os: linux
       sudo: required
       dist: trusty
@@ -31,8 +32,8 @@ matrix:
         - sudo apt-get install -y qt5-default qt5-qmake qtbase5-dev-tools qtmultimedia5-dev zlib1g-dev
       before_deploy:
         - tar -czf OpenRCT2Launcher-Linux-x64.tar.gz OpenRCT2
-      deploy:
-        file: OpenRCT2Launcher-Linux-x64.tar.gz
+      env:
+        - DEPLOY_FILE=OpenRCT2Launcher-Linux-x64.tar.gz
     - os: linux
       sudo: required
       dist: trusty
@@ -44,7 +45,6 @@ matrix:
         - sudo apt-get install -y g++-multilib zlib1g-dev:i386
       before_deploy:
         - tar -czf OpenRCT2Launcher-Linux-x86.tar.gz OpenRCT2
-      deploy:
-        file: OpenRCT2Launcher-Linux-x86.tar.gz
       env:
         - QMAKE_ARGS="-qt=qt5-i386-linux-gnu -spec linux-g++-32 INCLUDEPATH+=/usr/include/x86_64-linux-gnu/c++/4.8/32/"
+        - DEPLOY_FILE=OpenRCT2Launcher-Linux-x86.tar.gz

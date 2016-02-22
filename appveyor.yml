@@ -16,7 +16,7 @@ before_deploy:
 
     mkdir build-Windows
 
-    copy OpenRCT2.exe build-Windows\OpenRCT2.exe
+    copy release\OpenRCT2.exe build-Windows\OpenRCT2.exe
 
     windeployqt build-Windows\OpenRCT2.exe
 
