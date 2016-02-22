@@ -10,6 +10,11 @@ build_script:
     qmake
 
     nmake
+artifacts:
+- path: OpenRCT2Launcher-win.zip
+  name: zip-archive
+- path: OpenRCT2Launcher-win.exe
+  name: exe-installer
 before_deploy:
 - cmd: >-
     mkdir build-Windows
@@ -25,12 +30,10 @@ before_deploy:
     set PATH="C:\Program Files (x86)\Inno Setup 5";%PATH%
 
     iscc installer.iss
-
-    dir
 deploy:
 - provider: GitHub
   auth_token:
     secure: miPrvp4kj2bjSwLYaxsKk3X48RwA+dCdTXYd6MfZ2E5xvBhq/3EzsrUhIbAE1cS+
-  artifact: /OpenRCT2Launcher-win.*/
+  artifact: zip-archive, exe-installer
   on:
     appveyor_repo_tag: true
