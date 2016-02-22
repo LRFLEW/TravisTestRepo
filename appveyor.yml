@@ -1,0 +1,32 @@
+version: 0.0.4#{build}
+os: Visual Studio 2013
+install:
+- cmd: >-
+    SET PATH=%PATH%;C:\Qt\5.5\msvc2013\bin
+
+    "C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\Tools\VsDevCmd.bat"
+build_script:
+- cmd: >-
+    qmake
+
+    nmake
+before_deploy:
+- cmd: >-
+    set PATH="C:\Program Files\7-Zip";"C:\Program Files (x86)\Inno Setup 5";%PATH%
+
+    mkdir build-Windows
+
+    copy OpenRCT2.exe build-Windows\OpenRCT2.exe
+
+    windeployqt build-Windows\OpenRCT2.exe
+
+    pushd build-Windows & 7z a -tzip ..\OpenRCT2Launcher-win.zip * & popd
+
+    choco install innosetup
+
+    iscc installer.iss
+deploy:
+- provider: GitHub
+  auth_token:
+    secure: miPrvp4kj2bjSwLYaxsKk3X48RwA+dCdTXYd6MfZ2E5xvBhq/3EzsrUhIbAE1cS+
+  artifact: OpenRCT2Launcher-win.zip, OpenRCT2Launcher-win.exe
